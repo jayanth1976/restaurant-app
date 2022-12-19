@@ -53,7 +53,7 @@ h4 {
     font-family: var(--ff-primary);
     text-transform: capitalize;
     line-height: 1.25;
-    margin-bottom: 0.75rem;
+    /* margin-bottom: 0.75rem; */
 }
 h1 {
     font-size: 3rem;
@@ -67,9 +67,9 @@ h3 {
 h4 {
     font-size: 0.875rem;
 }
-p {
+/* p {
     margin-bottom: 1.25rem;
-}
+} */
 @media screen and (min-width: 800px) {
     h1 {
         font-size: 4rem;
@@ -96,7 +96,18 @@ p {
 /* 
 more global styles
 */
-
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.center-text {
+    text-align: center;
+}
+.inherit {
+    height: 100%;
+    width: 100%;
+}
 /* 
 ==========
 navbar
@@ -104,7 +115,7 @@ navbar
 */
 #menu {
     position: fixed;
-    top: 5%;
+    top: 2%;
     left: 5%;
     z-index: 1;
     font-size: 2rem;
@@ -120,17 +131,16 @@ nav {
     background: #e6e6e6;
     z-index: 1;
     transform: translateX(-100%);
-    transition:var(--transition);
+    transition: var(--transition);
 }
-@media  screen and (min-width:700px) {
-  nav{
-    width:35vw;
-    max-width: 20rem;
-  }
-  .banner a{
-    font-size: 1.5rem;
-  }
-
+@media screen and (min-width: 700px) {
+    nav {
+        width: 35vw;
+        max-width: 20rem;
+    }
+    .banner a {
+        font-size: 1.5rem;
+    }
 }
 .nav-header {
     text-align: right;
@@ -157,17 +167,17 @@ nav {
     display: block;
     font-size: 1.5rem;
     padding: 0.25rem 1rem;
-    color:var(--clr-grey-1);
+    color: var(--clr-grey-1);
     transition: var(--transition);
     cursor: pointer;
 }
-.nav-link:hover{
-  padding-left: 1.5rem;
-  border-left: 0.5rem solid var(--clr-primary);
-  background: var(--clr-primary-light);
+.nav-link:hover {
+    padding-left: 1.5rem;
+    border-left: 0.5rem solid var(--clr-primary);
+    background: var(--clr-primary-light);
 }
-.showNav{
-  transform: translateX(0);
+.showNav {
+    transform: translateX(0);
 }
 
 /* 
@@ -206,4 +216,125 @@ header h2 {
 }
 .banner a:hover {
     background-color: #8cbf19;
+}
+
+/* 
+
+==============
+table section
+==============
+
+*/
+#table {
+    height: 100vh;
+    background: #e6e6e6;
+    position: relative;
+}
+
+.table-con {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    height: 80vh;
+    margin: 0 auto;
+    /* background: aqua; */
+    display: grid;
+    grid-template-columns: 1.5fr 3fr;
+    column-gap: 2rem;
+}
+
+.table-heading,
+.search {
+    height: 10%;
+    width: 100%;
+}
+
+/* 
+
+==============
+table-item section
+==============
+
+*/
+#all-tables{
+   height: 90%;
+}
+.table-item {
+    height: 11vh;
+    width: 80%;
+    margin: 0 auto;
+    padding:0.5rem 1rem;
+}
+.table-item:hover{
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.table-item-title {
+    /* text-align: center; */
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-family: var(--ff-primary);
+    font-size: 1.2rem;
+}
+.table-item-content
+{
+    font-size: 0.7rem;
+}
+
+/* 
+
+==============
+food section
+==============
+
+*/
+#all-food-items{
+    overflow:auto;
+    height:70vh;
+}
+.food-item {
+    width: 100%;
+    padding:0.5rem 1rem;
+    margin: 0 auto;
+    margin-top: 1rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+.food-item:hover{
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.food-item-title {
+    font-size: 1.5rem;
+}
+.food-item-cost {
+    margin-left: auto;
+}
+input {
+    border: none;
+    border-radius: var(--radius);
+    height: 80%;
+    width:90%;
+    font-size: 1rem;
+    padding:0.5rem 1rem;
+    padding-left:2.5rem;
+    background: var(--clr-grey-10);
+    outline: none;
+    font-family: var(--ff-secondary);
+    /* border: 1px solid black; */
+}
+input:focus{
+    border: 3px solid hsl(201,100%,50%);
+}
+.search{
+    position:relative;
+}
+.fa-magnifying-glass{
+    position: absolute;
+    left:8%;
+    font-size: 1rem;
+ 
 }
