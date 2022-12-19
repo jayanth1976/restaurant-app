@@ -1,0 +1,209 @@
+/*
+=============== 
+Fonts
+===============
+*/
+/* @import url("https://fonts.googleapis.com/css?family=Catamaran:400,700|Grand+Hotel"); */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:ital@1&display=swap");
+
+/*
+=============== 
+Variables
+===============
+*/
+
+:root {
+    --clr-primary: #669300;
+    --clr-primary-light: #bfdc80;
+    --clr-grey-1: #102a42;
+    --clr-grey-5: #617d98;
+    --clr-grey-10: #f1f5f8;
+    --clr-white: #fff;
+    --clr-light-white: #f8f9fa;
+    --ff-primary: "Cabin", sans-serif;
+    --ff-secondary: "Roboto Condense", cursive;
+    --transition: all 0.3s linear;
+    --spacing: 0.25rem;
+    --radius: 0.5rem;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: var(--ff-secondary);
+    background: var(--clr-white);
+    color: var(--clr-grey-1);
+    line-height: 1.5;
+    font-size: 0.875rem;
+}
+a {
+    text-decoration: none;
+}
+img {
+    width: 100%;
+    display: block;
+}
+h1,
+h2,
+h3,
+h4 {
+    /* letter-spacing: var(--spacing); */
+    font-family: var(--ff-primary);
+    text-transform: capitalize;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+}
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2rem;
+}
+h3 {
+    font-size: 1.5rem;
+}
+h4 {
+    font-size: 0.875rem;
+}
+p {
+    margin-bottom: 1.25rem;
+}
+@media screen and (min-width: 800px) {
+    h1 {
+        font-size: 4rem;
+    }
+    h2 {
+        font-size: 2.5rem;
+    }
+    h3 {
+        font-size: 2rem;
+    }
+    h4 {
+        font-size: 1rem;
+    }
+    body {
+        font-size: 1rem;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+        line-height: 1;
+    }
+}
+/* 
+more global styles
+*/
+
+/* 
+==========
+navbar
+==========
+*/
+#menu {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    z-index: 1;
+    font-size: 2rem;
+    color: var(--clr-primary);
+    cursor: pointer;
+}
+nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #e6e6e6;
+    z-index: 1;
+    transform: translateX(-100%);
+    transition:var(--transition);
+}
+@media  screen and (min-width:700px) {
+  nav{
+    width:35vw;
+    max-width: 20rem;
+  }
+  .banner a{
+    font-size: 1.5rem;
+  }
+
+}
+.nav-header {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+#close-nav {
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    font-size: 2rem;
+    color: #f29c9c;
+    /* transition: color 0.3s linear; */
+    transition: var(--transition);
+    cursor: pointer;
+}
+#close-nav:hover {
+    color: #bb2525;
+}
+.nav-ul {
+    list-style-type: none;
+    font-family: var(--ff-primary);
+}
+.nav-link {
+    display: block;
+    font-size: 1.5rem;
+    padding: 0.25rem 1rem;
+    color:var(--clr-grey-1);
+    transition: var(--transition);
+    cursor: pointer;
+}
+.nav-link:hover{
+  padding-left: 1.5rem;
+  border-left: 0.5rem solid var(--clr-primary);
+  background: var(--clr-primary-light);
+}
+.showNav{
+  transform: translateX(0);
+}
+
+/* 
+==========
+header
+==========
+*/
+header {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("images/banner.jpg") center/cover fixed no-repeat;
+    position: relative;
+}
+.banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+header h1 {
+    color: var(--clr-primary);
+    margin-bottom: 2rem;
+}
+header h2 {
+    color: white;
+    font-family: var(--ff-secondary);
+}
+.banner a {
+    color: #ffffff;
+    background: var(--clr-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 5%;
+    transition: var(--transition);
+    font-weight: bold;
+}
+.banner a:hover {
+    background-color: #8cbf19;
+}
