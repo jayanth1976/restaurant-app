@@ -1,11 +1,22 @@
 let menuIcon = document.querySelector("#menu");
 let nav = document.getElementById("nav-bar");
 let closeNav = document.querySelector("#close-nav");
+let popUp = document.getElementById("pop-up");
+let closePopUp = document.getElementById("close-table");
+
 menuIcon.addEventListener("click", () => {
     nav.classList.add("showNav");
 });
+
 closeNav.addEventListener("click", () => {
     nav.classList.remove("showNav");
+});
+
+closePopUp.addEventListener("click", () => {
+    popUp.classList.remove("show-pop-up");
+    let tableMain = document.getElementById("all-tables");
+    deleteAllChildren(tableMain)
+    createAllTables(tableListMain);
 });
 
 const dummyFoodItems = {
@@ -196,6 +207,8 @@ class Table {
         this.itemsOrdered = getItemsArray(orderList);
         this.totalItems = Object.keys(orderList).length;
         this.totalCost = calculateCost(orderList);
+        this.itemsOrderedId = [];
+        this.itemQty = [];
     }
 }
 
@@ -226,22 +239,43 @@ function createTable({ id, title, totalItems, totalCost }) {
     table.addEventListener("drop", (e) => {
         const draggedItem = e.dataTransfer.getData("text");
         const { title, cost } = dummyFoodItems[draggedItem];
-        let { itemsOrdered, totalItems, totalCost } = tableListMain[id];
-        itemsOrdered = [...itemsOrdered, title];
-        totalItems = ++totalItems;
-        totalCost = totalCost + cost;
-        tableListMain[id] = {
-            ...tableListMain[id],
-            itemsOrdered,
-            totalCost,
-            totalItems,
-        };
-        let allItems = document.getElementById("all-tables");
-        deleteAllChildren(allItems);
-        createAllTables(tableListMain);
+
+        if (!tableListMain[id].itemsOrdered.includes(title)) {
+            let {
+                itemsOrdered,
+                totalItems,
+                totalCost,
+                itemsOrderedId,
+                itemQty,
+            } = tableListMain[id];
+            itemsOrdered = [...itemsOrdered, title];
+            totalItems = ++totalItems;
+            totalCost = totalCost + cost;
+            itemsOrderedId = [...itemsOrderedId, draggedItem];
+            itemQty = [...itemQty, 1];
+            tableListMain[id] = {
+                ...tableListMain[id],
+                itemsOrdered,
+                totalCost,
+                totalItems,
+                itemsOrderedId,
+                itemQty,
+            };
+            let allItems = document.getElementById("all-tables");
+            deleteAllChildren(allItems);
+            createAllTables(tableListMain);
+        }
     });
     table.addEventListener("dragover", (e) => {
         e.preventDefault();
+    });
+    table.addEventListener("click", (e) => {
+        const popUp = document.getElementById("pop-up");
+        popUp.classList.add("show-pop-up");
+        deleteBillItems();
+        changeBillHeading(id);
+        displayBillItems(id);
+        billTotal(id);
     });
 
     return table;
@@ -258,28 +292,142 @@ function createAllTables(tableList) {
 const tableListMain = getTableList();
 createAllTables(tableListMain);
 
-function filterTables(obj, key) {
-    let regex = new RegExp(key, "i");
-    let allItems = document.getElementById("all-tables");
-    deleteAllChildren(allItems);
-    let filteredItems = {};
-    let index = 1;
-    for (let i in obj) {
-        if (regex.test(obj[i].title)) {
-            filteredItems = {
-                ...filteredItems,
-                [i]: { ...obj[i] },
-            };
-            i++;
-        }
-    }
-    createAllTables(filteredItems);
-}
+// function filterTables(obj, key) {
+//     let regex = new RegExp(key, "i");
+//     let allItems = document.getElementById("all-tables");
+//     deleteAllChildren(allItems);
+//     let filteredItems = {};
+//     let index = 1;
+//     for (let i in obj) {
+//         if (regex.test(obj[i].title)) {
+//             filteredItems = {
+//                 ...filteredItems,
+//                 [i]: { ...obj[i] },
+//             };
+//             i++;
+//         }
+//     }
+//     createAllTables(filteredItems);
+// }
 
 const tablesInput = document.getElementById("filter-table");
 tablesInput.addEventListener("input", (e) => {
     const key = e.target.value;
-    filterTables(getTableList(), key);
+    filterTables(key);
 });
 
-console.log(tableListMain);
+// const check = document.getElementById('all-tables')
+// console.log(check.firstElementChild.firstElementChild.innerHTML);
+
+function filterTables(key) {
+    let regex = new RegExp(key, "i");
+    let allItems = document.getElementById("all-tables");
+
+    displayAll(allItems);
+
+    let child = allItems.firstElementChild;
+    while (child) {
+        if (!regex.test(child.firstElementChild.innerHTML)) {
+            child.style.display = "none";
+        }
+        child = child.nextElementSibling;
+    }
+}
+
+function displayAll(allItems) {
+    let child = allItems.firstElementChild;
+    while (child) {
+        child.style.display = "block";
+        child = child.nextElementSibling;
+    }
+}
+
+/* 
+============
+    Bill
+============
+*/
+
+function displayBillItems(tableId) {
+    let billCon = document.getElementById("bill-content");
+    let itemIdsArr = tableListMain[tableId].itemsOrderedId;
+    // console.log('in',itemIdsArr)
+    let l = itemIdsArr.length;
+    for (let i = 1; i <= l; ++i) {
+        let eachId = itemIdsArr[i - 1];
+        // console.log(eachId);
+        let { title, cost } = dummyFoodItems[eachId];
+        let child = createBillItem(i, eachId, title, cost, tableId);
+        // console.log(child,title,cost)
+        billCon.appendChild(child);
+    }
+}
+
+function createBillItem(siNO, foodId, title, cost, tableId) {
+    // console.log('in child',title,cost)
+    let div = document.createElement("div");
+    div.classList.add("bill-content-row");
+
+    let p1 = document.createElement("p");
+    p1.innerHTML = `${siNO}.`;
+
+    let p2 = document.createElement("p");
+    p2.innerHTML = title;
+
+    let p3 = document.createElement("p");
+    p3.innerHTML = `Rs.${cost}`;
+
+    let input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("id", foodId);
+    input.setAttribute("min", "1");
+    // input.setAttribute("name", "1");
+    let qty = tableListMain[tableId].itemQty[siNO - 1];
+    input.setAttribute("value", qty.toString());
+    let delIcon = document.createElement("i");
+    delIcon.setAttribute("class", "fa-solid fa-trash");
+
+    input.addEventListener("input", (e) => {
+        let totCost = tableListMain[tableId].totalCost;
+        let qty = parseInt(e.target.value);
+        // let prevQty = parseInt(input.getAttribute("name"));
+        let prevQty = parseInt(tableListMain[tableId].itemQty[siNO - 1])
+        let toAdd = dummyFoodItems[foodId].cost * qty;
+        // input.setAttribute("name", qty.toString());
+        tableListMain[tableId].itemQty[siNO - 1] = qty.toString();
+        tableListMain[tableId].totalCost =
+            totCost - prevQty * dummyFoodItems[foodId].cost + toAdd;
+        // console.log(tableListMain[tableId])
+        billTotal(tableId);
+    });
+
+    div.appendChild(p1);
+    div.appendChild(p2);
+    div.appendChild(p3);
+    div.appendChild(input);
+    div.appendChild(delIcon);
+
+    return div;
+}
+function deleteBillItems() {
+    let bill = document.getElementById("bill-content");
+    let child = bill.firstElementChild.nextElementSibling;
+    let next;
+    while (child) {
+        next = child.nextElementSibling;
+        bill.removeChild(child);
+        child = next;
+    }
+}
+
+function changeBillHeading(id) {
+    let head = document.getElementById("bill-heading");
+    head.innerHTML = `Table ${id} | order details`;
+}
+
+function billTotal(tableId) {
+    // console.log("fine");
+    let totalBillCost = tableListMain[tableId].totalCost;
+    let totalDisplay = document.getElementById("bill-total");
+    totalDisplay.innerHTML = `Total Rs.${totalBillCost}`;
+}
