@@ -270,6 +270,8 @@ function createTable({ id, title, totalItems, totalCost }) {
         e.preventDefault();
     });
     table.addEventListener("click", (e) => {
+        let generateBill = document.getElementById("generate-bill");
+        generateBill.setAttribute("name", id);
         const popUp = document.getElementById("pop-up");
         popUp.classList.add("show-pop-up");
         deleteBillItems();
@@ -448,4 +450,41 @@ function upDateTableLIist(foodId, tableId) {
     table.itemsOrdered.splice(mainIndex, 1);
     table.itemsOrderedId.splice(mainIndex, 1);
     table.itemQty.splice(mainIndex, 1);
+}
+
+/* 
+=============
+generate bill
+============
+*/
+
+let generateBill = document.getElementById("generate-bill");
+generateBill.addEventListener("click", (e) => {
+    const tableId = e.target.name;
+    const grandTotal = tableListMain[tableId].totalCost;
+    if (
+        window.confirm(
+            `Total amount  : ${grandTotal}\nClick ok to generate bill`
+        )
+    ) {
+        clearBill(tableId);
+        deleteBillItems();
+        closeBill();
+        alert("Thank you visit again!");
+    }
+});
+
+function clearBill(tableId) {
+    const table = tableListMain[tableId];
+    table.itemQty = [];
+    table.itemsOrdered = [];
+    table.itemsOrderedId = [];
+    table.totalCost = 0;
+    table.totalItems = 0;
+}
+function closeBill() {
+    popUp.classList.remove("show-pop-up");
+    let tableMain = document.getElementById("all-tables");
+    deleteAllChildren(tableMain);
+    createAllTables(tableListMain);
 }
