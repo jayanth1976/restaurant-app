@@ -15,7 +15,7 @@ closeNav.addEventListener("click", () => {
 closePopUp.addEventListener("click", () => {
     popUp.classList.remove("show-pop-up");
     let tableMain = document.getElementById("all-tables");
-    deleteAllChildren(tableMain)
+    deleteAllChildren(tableMain);
     createAllTables(tableListMain);
 });
 
@@ -351,7 +351,6 @@ function displayAll(allItems) {
 function displayBillItems(tableId) {
     let billCon = document.getElementById("bill-content");
     let itemIdsArr = tableListMain[tableId].itemsOrderedId;
-    // console.log('in',itemIdsArr)
     let l = itemIdsArr.length;
     for (let i = 1; i <= l; ++i) {
         let eachId = itemIdsArr[i - 1];
@@ -387,11 +386,19 @@ function createBillItem(siNO, foodId, title, cost, tableId) {
     let delIcon = document.createElement("i");
     delIcon.setAttribute("class", "fa-solid fa-trash");
 
+    delIcon.addEventListener("click", () => {
+        upDateTableLIist(foodId, tableId);
+        div.remove();
+        deleteBillItems();
+        billTotal(tableId);
+        displayBillItems(tableId);
+    });
+
     input.addEventListener("input", (e) => {
         let totCost = tableListMain[tableId].totalCost;
         let qty = parseInt(e.target.value);
         // let prevQty = parseInt(input.getAttribute("name"));
-        let prevQty = parseInt(tableListMain[tableId].itemQty[siNO - 1])
+        let prevQty = parseInt(tableListMain[tableId].itemQty[siNO - 1]);
         let toAdd = dummyFoodItems[foodId].cost * qty;
         // input.setAttribute("name", qty.toString());
         tableListMain[tableId].itemQty[siNO - 1] = qty.toString();
@@ -426,8 +433,19 @@ function changeBillHeading(id) {
 }
 
 function billTotal(tableId) {
-    // console.log("fine");
     let totalBillCost = tableListMain[tableId].totalCost;
     let totalDisplay = document.getElementById("bill-total");
     totalDisplay.innerHTML = `Total Rs.${totalBillCost}`;
+}
+function upDateTableLIist(foodId, tableId) {
+    const { title, cost } = dummyFoodItems[foodId];
+    const mainIndex = tableListMain[tableId].itemsOrdered.indexOf(title);
+    const table = tableListMain[tableId];
+    const currCost = table.totalCost;
+    let toSub = table.itemQty[mainIndex] * cost;
+    table.totalCost = currCost - toSub;
+    table.totalItems -= 1;
+    table.itemsOrdered.splice(mainIndex, 1);
+    table.itemsOrderedId.splice(mainIndex, 1);
+    table.itemQty.splice(mainIndex, 1);
 }
