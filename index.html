@@ -12,7 +12,6 @@
         ></script>
     </head>
     <body>
-
         <!-- popup bill -->
         <div id="pop-up">
             <div id="bill">
@@ -24,9 +23,10 @@
                     <div id="bill-content">
                         <div class="bill-content-heading">
                             <p>SI.no</p>
-                            <P>Item</P>
+                            <p>Item</p>
                             <p>price</p>
                             <p>Qty</p>
+                            <p class="">Remove</p>
                         </div>
                         <!-- dynamic items -->
                     </div>
@@ -61,22 +61,37 @@
                 <a href="#table">Order Now</a>
             </div>
         </header>
+        <!-- header-end -->
+
         <section id="table">
             <div class="table-con">
                 <div class="table-num">
                     <!-- <h3 class="center table-heading">tables</h3> -->
                     <div class="search center">
-                        <input type="text" name="" id="filter-table" placeholder="Search Item">
+                        <input
+                            type="text"
+                            name=""
+                            id="filter-table"
+                            placeholder="Search table"
+                        />
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <div id="all-tables">
-                      
+                        <!-- dynamic tables -->
                     </div>
                 </div>
                 <div class="dishes">
                     <div class="search center">
-                        <input type="text" name="" id="filter" placeholder="Search Item">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input
+                            type="text"
+                            name=""
+                            id="filter"
+                            placeholder="Search Item"
+                        />
+                        <i
+                            class="fa-solid fa-magnifying-glass"
+                            id="icon-food-filter"
+                        ></i>
                     </div>
                     <div id="all-food-items">
                         <!-- <div class="food-item">
@@ -89,7 +104,6 @@
                 </div>
             </div>
         </section>
-        <!-- header-end -->
-        <script src="./app.js"></script>
+        <script src="../clean/destination.js"></script>
     </body>
 </html>
